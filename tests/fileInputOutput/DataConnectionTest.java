@@ -9,7 +9,7 @@ import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataConnectionTest {
-    String connectionURL = "EmployeeDB.db";
+    String connectionURL = "jdbc:sqlite:EmployeeDB.db";
     Connection conn = DriverManager.getConnection(connectionURL);
 
 
@@ -18,7 +18,7 @@ class DataConnectionTest {
 
     @Test
     void insertData() throws SQLException {
-        String connectionURL = "EmployeeDB.db";
+//        String connectionURL = "jdbc:sqlite:EmployeeDB.db";
         Connection conn = DriverManager.getConnection(connectionURL);
         String insertInfo = "INSERT INTO Employee(employeeID,fName,lName,hireDate,status)" +
                 "VALUES" +
@@ -58,7 +58,7 @@ class DataConnectionTest {
         EmployeeAdd employeeAdd = new EmployeeAdd();
         String query = "INSERT INTO "
                 + "Employee(employeeID, fName, lName, hireDate, status)"
-                + " values(? , ? , ? , ?, ?,?)";
+                + " values(? , ? , ? , ?, ?)";
         PreparedStatement prepared = this.conn.prepareStatement(query);
 
         prepared.setInt(1, employeeAdd.getEmployeeID());
@@ -81,6 +81,7 @@ class DataConnectionTest {
 
     @Test
     void displayStatusOrder(String orderInput) throws SQLException {
+        orderInput = "active";
         String query = "SELECT employeeID, fName, lName, hireDate, salary, status " +
                 "FROM Employee " +
                 "FULL JOIN Salary ON Employee.employeeID = Salary.employeeID" + orderInput;

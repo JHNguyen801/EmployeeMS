@@ -1,7 +1,6 @@
 package model;
 
 import fileInputOutput.DataConnection;
-import fileInputOutput.EmployeeDataLoad;
 import fileInputOutput.JReader;
 
 import java.io.IOException;

@@ -45,7 +45,8 @@ public class EmployeeApp {
         System.out.println("Enter 3: To Sort Employee by Salary ");
         System.out.println("Enter 4: To Filter Employee Info ");
         System.out.println("Enter 5: To Update Employee Info ");
-        System.out.println("Enter 6: To Exit the EIMS Portal ");
+        System.out.println("Enter 6: Connect to DB ");
+        System.out.println("Enter 7: To Exit the EIMS Portal ");
 
         char userInput = 0;
         boolean valid = false;
@@ -230,7 +231,8 @@ public class EmployeeApp {
         System.out.println("Enter 3: To Sort Employee by Salary ");
         System.out.println("Enter 4: To Filter Employee Info ");
         System.out.println("Enter 5: To Update Employee Info ");
-        System.out.println("Enter 6: To Exit the EIMS Portal ");
+        System.out.println("Enter 6: Connect to DB ");
+        System.out.println("Enter 7: To Exit the EIMS Portal ");
     }
     private static void subMenu(){
         System.out.println("\n\t\t  Filter Submenu");

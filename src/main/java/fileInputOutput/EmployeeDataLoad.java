@@ -2,11 +2,9 @@ package fileInputOutput;
 
 import model.EmployeeAdd;
 import model.EmployeeIDException;
-import view.EmployeeApp;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 /*
     EmployeeDataLoad class is reading the data from a CSV file and store
     data into an ArrayList.
