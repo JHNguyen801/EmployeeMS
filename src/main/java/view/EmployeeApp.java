@@ -19,6 +19,8 @@ public class EmployeeApp {
     public static Scanner select = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
     private static EmployeeAdd staff = new EmployeeAdd();
     private static EmployeeShow es = new EmployeeShow();
+    private static DataConnection dataConnection;
+
     private static final EmployeeDataLoad employeeDataLoad = new EmployeeDataLoad();
 
     public static void main(String[] args) throws IOException, EmployeeIDException, ClassNotFoundException, InterruptedException, SQLException {
@@ -37,17 +39,7 @@ public class EmployeeApp {
     }
 
     private static void mainChoice(ArrayList<EmployeeAdd> employeeList) throws EmployeeIDException, IOException, ClassNotFoundException, SQLException {
-        System.out.println("\t\t*******************************************");
-        System.out.println("\t\t  Employee Information Management System");
-        System.out.println("\t\t*******************************************");
-        System.out.println("Enter 1: To Add an Employee Details ");
-        System.out.println("Enter 2: To See an Employee Details ");
-        System.out.println("Enter 3: To Sort Employee by Salary ");
-        System.out.println("Enter 4: To Filter Employee Info ");
-        System.out.println("Enter 5: To Update Employee Info ");
-        System.out.println("Enter 6: Connect to DB ");
-        System.out.println("Enter 7: To Exit the EIMS Portal ");
-
+        mainMenu();
         char userInput = 0;
         boolean valid = false;
 
@@ -139,47 +131,58 @@ public class EmployeeApp {
         }
     }
 
-    public static void DBMenu() throws SQLException {
+    public static void DBMenu() throws SQLException, EmployeeIDException, IOException,
+            ClassNotFoundException {
+        ArrayList<EmployeeAdd> employeeList = new ArrayList<>();
         boolean out = false;
         char userInput;
-
-        DataConnection dbh = null;
+        DataConnection dataConnect = null;
         try {
-            dbh = new DataConnection("EmployeeDB.db");
-        } catch (SQLException e2) {
-            e2.printStackTrace();
+             dataConnect = new DataConnection("EmployeeDB.db");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         while (!out) { // Menu loop
-            System.out.println("DB Menu\n"
-                    + "=========\n"
-                    + "What do you want to do?\n"
-                    + "1. Display employees in order\n"
-                    + "4. Quit\n");
+            DBSubMenu();
 
+            System.out.print("\nPlease enter the option above: ");
             userInput = select.nextLine().charAt(0);
 
             switch (userInput) {
                 case '1':
                     try {
-                        dbh.displayStatusOrder("status");
+                        dataConnect.displayStatusOrder();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+//                    DBSubMenu();
                     break;
                 case '2':
                 {
-                    dbh.displayJoin();
+                    try {
+                        dataConnect.displayJoin();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+//                    DBSubMenu();
+                    break;
+                }
+                case '3':
+                {
+                    mainChoice(employeeList);
+                    dataConnect.close();
+                    break;
                 }
                 default:
+                    DBSubMenu();
                     System.out.println("Wrong input");
             }
-
         }// Loop end
     }
 
-
-    private static void employeeFilter(ArrayList<EmployeeAdd> employeeList) throws EmployeeIDException, IOException, ClassNotFoundException, SQLException {
+    private static void employeeFilter(ArrayList<EmployeeAdd> employeeList) throws EmployeeIDException,
+            IOException, ClassNotFoundException, SQLException {
         boolean valid = false;
         char userInput = 0;
         System.out.println("\n\t\t  Filter Submenu");
@@ -207,7 +210,7 @@ public class EmployeeApp {
                     EmployeeFilter employeeFilter = new EmployeeFilter();
                     employeeFilter.salaryFilter(employeeList);
                     subMenu();
-                break;
+                    break;
                 }
                 case '3': {
                     mainChoice(employeeList);
@@ -220,9 +223,7 @@ public class EmployeeApp {
         }
     }
 
-
-
-        private static void mainMenu() {
+    private static void mainMenu() {
         System.out.println("\t\t*******************************************");
         System.out.println("\t\t  Employee Information Management System");
         System.out.println("\t\t*******************************************");
@@ -231,7 +232,7 @@ public class EmployeeApp {
         System.out.println("Enter 3: To Sort Employee by Salary ");
         System.out.println("Enter 4: To Filter Employee Info ");
         System.out.println("Enter 5: To Update Employee Info ");
-        System.out.println("Enter 6: Connect to DB ");
+        System.out.println("Enter 6: Connect/View to Database ");
         System.out.println("Enter 7: To Exit the EIMS Portal ");
     }
     private static void subMenu(){
@@ -240,6 +241,14 @@ public class EmployeeApp {
         System.out.println("Enter 1: To filter status");
         System.out.println("Enter 2: To filter salary");
         System.out.println("Enter 3: Back to the main menu");
+    }
+
+    private static void DBSubMenu(){
+        System.out.println("\n\t\t  Filter Submenu");
+        System.out.println("*****************************************");
+        System.out.println("Enter 1: Display employees in status order");
+        System.out.println("Enter 2: Display Join & Aggregate Employee Info");
+        System.out.println("Enter 3: Back to the main menu" + "\n");
     }
 }
 

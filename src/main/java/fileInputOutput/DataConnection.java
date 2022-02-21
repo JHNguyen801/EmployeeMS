@@ -7,62 +7,49 @@ import java.sql.*;
 
 
 public class DataConnection {
-    String dataFilename;
-    File dataFile = new File(".");
-//        private Connection conn = null;
-    String url = "jdbc:sqlite:" + dataFile.getAbsolutePath()
-            +File.separator +"files" + File.separator + dataFilename;
-    Connection conn = DriverManager.getConnection(url);
-
-//    private Connection conn = null;
+    String connectionURL = "jdbc:sqlite:src/main/java/data/EmployeeDB.db";
+    Connection conn = DriverManager.getConnection(connectionURL);
+    // A class constructor holds a string of database file
     public DataConnection(String dbfilename) throws SQLException {
         // TODO Auto-generated constructor stub
         if(this.conn == null) {
-            connect(dbfilename);
+            connectDB(dbfilename);
         }
         else {
             System.out.println("Connection already opened");
         }
     }
 
-    public DataConnection() throws SQLException {
-
-    }
-
-    private void connect(String dataFilename) throws SQLException {
-        File dataFile = new File(".");
-        String url = "jdbc:sqlite:" + dataFile.getAbsolutePath()
-                +File.separator +"files" + File.separator + dataFilename;
+    private void connectDB(String dataFilename) throws SQLException {
+        File dataFile = new File("");
+        String url = "jdbc:sqlite:" + dataFile.getAbsolutePath() + dataFilename;
 
         this.conn = DriverManager.getConnection(url);
         System.out.println("Connection to database successfully");
     }
 
     public void addEmplolyeeToDB(EmployeeAdd employeeAdd) throws SQLException {
-        String query = "INSERT INTO "
-                + "Employee(employeeID, fName, lName, hireDate, status)"
-                + " values(? , ? , ? , ?, ?,?)";
+        String query = "INSERT INTO Employee(FirstName, LastName, hireDate, status)"
+                + " values(? , ? , ? , ?)";
         PreparedStatement prepared = this.conn.prepareStatement(query);
-
-        prepared.setInt(1, employeeAdd.getEmployeeID());
-        prepared.setString(2, employeeAdd.getFirstName());
-        prepared.setString(3, employeeAdd.getLastName());
-        prepared.setString(4, employeeAdd.getHireDate());
-//        prepared.setDouble(5, employeeAdd.getSalary());
-        prepared.setString(5, employeeAdd.getStatus());
+        prepared.setString(1, employeeAdd.getFirstName());
+        prepared.setString(2, employeeAdd.getLastName());
+        prepared.setString(3, employeeAdd.getHireDate());
+        prepared.setString(4, employeeAdd.getStatus());
         prepared.execute();
 
         String query2 = "INSERT INTO "
-                + "Salary(employeeID,salary)"
-                + " values(? , ?)";
+                + "Salary(salary)"
+                + " values(?)";
         PreparedStatement prepared2 = this.conn.prepareStatement(query2);
-        prepared.setInt(1, employeeAdd.getEmployeeID());
-        prepared.setDouble(2, employeeAdd.getSalary());
-        prepared.execute();
+//        prepared.setInt(1, employeeAdd.getEmployeeID());
+        prepared2.setDouble(1, employeeAdd.getSalary());
+        prepared2.execute();
     }
 
+    // insertData() method is for testing the SQL insert statement
     public void insertData() throws SQLException {
-        String insertInfo = "INSERT INTO Employee(employeeID,fName,lName,hireDate,status)" +
+        String insertInfo = "INSERT INTO Employee(employeeID,FirstName,LastName,hireDate,status)" +
                 "values" +
                 "(1, 'Kat', 'Burr', '01/01/2021', 'active')," +
                 "(2, 'Han', 'Do', '01/01/2022', 'active')," +
@@ -91,76 +78,68 @@ public class DataConnection {
         }
     }
 
-    public void displayStatusOrder(String orderInput) throws SQLException {
-
-        String query = "SELECT employeeID, fName, lName, hireDate, salary, status " +
+    // displayStatusOrder method shows the employees information in order by status
+    public void displayStatusOrder() throws SQLException {
+        String query = "SELECT Employee.employeeID, FirstName, LastName, hireDate, salary, status " +
                 "FROM Employee " +
-                "FULL JOIN Salary ON Employee.employeeID = Salary.employeeID" + orderInput;
-        if (orderInput == "status")
-            query += "ORDER BY status ASC";
+                "JOIN Salary ON Employee.employeeID = Salary.employeeID ORDER BY status";
 
         PreparedStatement prepared = this.conn.prepareStatement(query);
 
         ResultSet rs = prepared.executeQuery();
         ResultSetMetaData resultMeta = rs.getMetaData();
+        int columnsNumber = resultMeta.getColumnCount();
 
-        System.out.println("\n**********************************");
-        //Display columns
+        System.out.println("\n***************************************************" +
+                "******************************************");
+        //Display column header
         System.out.print("*");
-        for(int i = 1; i <= resultMeta.getColumnCount(); i++)
-            System.out.print("\t"
-                    + resultMeta.getColumnName(i).toUpperCase()
-                    + "\t *");
+        for(int i = 1; i <= columnsNumber; i++)
+            System.out.printf("%-10s\t" ,resultMeta.getColumnName(i).toUpperCase()
+                    + "\t |");
 
-        System.out.println("\n**********************************");
+        System.out.println("\n***************************************************" +
+                "******************************************");
 
         while(rs.next()) {
             for(int i = 1; i <= resultMeta.getColumnCount(); i++)
-                System.out.print("\t"
-                        + rs.getObject(i).toString()
-                        + "\t |");
+                System.out.printf("%-15s\t", rs.getObject(i).toString());
 
-            System.out.println("\n---------------------------------");
+            System.out.println("\n-----------------------------------------------" +
+                    "----------------------------------------------");
         }
-
         rs.close();
         prepared.close();
-
     }
 
     public void displayJoin() throws SQLException {
         displayAggregate();
-        String query = "SELECT employeeID, fName, lName, salary, status " +
+        String query = "SELECT Employee.employeeID, FirstName, LastName, HireDate,salary, status " +
                 "FROM Employee " +
-                "FULLY JOIN Salary " +
-                "ON Employee.employeeID = Salary.employeeID ORDER BY fName, lName";
+                "JOIN Salary ON Employee.employeeID = Salary.employeeID ORDER BY FirstName, LastName";
 
-        PreparedStatement prepared = this.conn.prepareStatement(query);
-
+        PreparedStatement prepared = conn.prepareStatement(query);
         ResultSet rs = prepared.executeQuery();
         ResultSetMetaData resultMeta = rs.getMetaData();
 
-        System.out.println("\n**********************************");
+        System.out.println("\n***************************************************" +
+                "******************************************");
         //Display columns
         System.out.print("*");
         for(int i = 1; i <= resultMeta.getColumnCount(); i++)
-            System.out.print("\t"
-                    + resultMeta.getColumnName(i).toUpperCase()
-                    + "\t *");
+            System.out.printf("%-10s\t" ,resultMeta.getColumnName(i).toUpperCase()
+                    + "\t |");
 
-        System.out.println("\n**********************************");
+        System.out.println("\n***************************************************" +
+                "******************************************");
 
         while(rs.next()) {
             for(int i = 1; i <= resultMeta.getColumnCount(); i++)
-                System.out.print("\t"
-                        + rs.getObject(i).toString()
-                        + "\t |");
+                System.out.printf("%-15s\t", rs.getObject(i).toString());
 
-            System.out.println("\n---------------------------------");
+            System.out.println("\n-----------------------------------------------" +
+                    "----------------------------------------------");
         }
-        rs.close();
-        prepared.close();
-
     }
 
     // displayAggregate method display the statistic salary data
@@ -170,6 +149,16 @@ public class DataConnection {
                 "FROM salary";
         PreparedStatement prepared = this.conn.prepareStatement(query);
         ResultSet rs = prepared.executeQuery();
+        ResultSetMetaData resultMeta = rs.getMetaData();
+        System.out.printf("%10s %12s %14s %14s", "Total Employee", "Min Salary", "Max Salary", "Avg Salary");
+        System.out.println("\n--------------------------------------------------------------");
+        while(rs.next()) {
+            for(int i = 1; i <= resultMeta.getColumnCount(); i++)
+                System.out.print("\t"
+                        + rs.getObject(i).toString()
+                        + "\t\t |");
+            System.out.println("\n--------------------------------------------------------------");
+        }
         rs.close();
         prepared.close();
     }

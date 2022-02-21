@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="EmployeeDB">
+<dataSource name="EmployeeDB_test">
   <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.32">
     <root id="1">
       <ServerVersion>3.34.0</ServerVersion>
@@ -1340,44 +1340,44 @@
     <table id="494" parent="170" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <column id="495" parent="491" name="employeeID">
+    <column id="495" parent="491" name="EmployeeID">
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="496" parent="491" name="fName">
+    <column id="496" parent="491" name="FirstName">
       <DataType>VARCHAR(64)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="497" parent="491" name="lName">
+    <column id="497" parent="491" name="LastName">
       <DataType>VARCHAR(64)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="498" parent="491" name="hireDate">
+    <column id="498" parent="491" name="HireDate">
       <DataType>DATE|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="499" parent="491" name="status">
+    <column id="499" parent="491" name="Status">
       <DataType>TEXT|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
     <index id="500" parent="491" name="sqlite_autoindex_Employee_1">
-      <ColNames>employeeID</ColNames>
+      <ColNames>EmployeeID</ColNames>
       <ColumnCollations></ColumnCollations>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
     <key id="501" parent="491">
-      <ColNames>employeeID</ColNames>
+      <ColNames>EmployeeID</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Employee_1</UnderlyingIndexName>
     </key>
     <key id="502" parent="491">
-      <ColNames>employeeID</ColNames>
+      <ColNames>EmployeeID</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_Employee_1</UnderlyingIndexName>
     </key>
     <column id="503" parent="492" name="employeeID">

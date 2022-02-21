@@ -14,9 +14,10 @@ import java.util.ArrayList;
 public class AddSaveThread implements Runnable{
     EmployeeOutput employeeOutput = new EmployeeOutput();
     EmployeeAdd employeeAdd = new EmployeeAdd();
-    DataConnection dataConnection = new DataConnection();
+    DataConnection dataConnection = new DataConnection("EmployeeDB.db");
     ArrayList<EmployeeAdd> employeeList = employeeAdd.getInfo();
-    JReader jReader =  new JReader();
+//    JReader jReader =  new JReader();
+
     // A default constructor
     public AddSaveThread() throws EmployeeIDException, IOException, SQLException {
     }
@@ -25,14 +26,14 @@ public class AddSaveThread implements Runnable{
     public void run() {
         try {
 //            jReader.saveListToFile(employeeList);
-            dataConnection.addEmplolyeeToDB(employeeAdd);
             employeeOutput.saveOutput(employeeList);
+            dataConnection.addEmplolyeeToDB(employeeAdd);
         } catch (EmployeeIDException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
