@@ -232,7 +232,7 @@ public class EmployeeApp {
         System.out.println("Enter 3: To Sort Employee by Salary ");
         System.out.println("Enter 4: To Filter Employee Info ");
         System.out.println("Enter 5: To Update Employee Info ");
-        System.out.println("Enter 6: Connect/View to Database ");
+        System.out.println("Enter 6: Connect/View Database ");
         System.out.println("Enter 7: To Exit the EIMS Portal ");
     }
     private static void subMenu(){

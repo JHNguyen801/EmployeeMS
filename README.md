@@ -23,7 +23,7 @@ The application should implement advanced Java concepts, which include in the fo
 10. JUnit Testing
 
 ### Class Model & Design
-![img.png](img.png)
+![img_4.png](img_4.png)
 
 
 ### Sample of the output program:
@@ -39,13 +39,13 @@ File successfully loaded using Serialization
 3. Press 3: To Sort Employee by Salary
 4. Enter 4: To Filter Employee Info
 5. Enter 5: To Update Employee Info
-6. Enter 6: Connect/View to Database
+6. Enter 6: Connect/View Database
 7. Press 7: To Exit the EIMS Portal
 
 Please Enter choice: 6
 
-Database Menu
-=========
+###Database Menu
+
 Choose your option below to view employees information in the DB
 1. Display employees in status order
 2. Display Join & Aggregate Employee Info
