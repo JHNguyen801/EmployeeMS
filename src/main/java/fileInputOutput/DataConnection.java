@@ -5,10 +5,17 @@ import model.EmployeeAdd;
 import java.io.File;
 import java.sql.*;
 
+/*
+    DataConnection Class contains methods to connect, save data and retrieve data
+    from a  database using the SQL string embedded in the program codes.
+    A user interacts with the program, responding to a request.
+ */
 
 public class DataConnection {
+    // URL string of database file location
     String connectionURL = "jdbc:sqlite:src/main/java/data/EmployeeDB.db";
     Connection conn = DriverManager.getConnection(connectionURL);
+
     // A class constructor holds a string of database file
     public DataConnection(String dbfilename) throws SQLException {
         // TODO Auto-generated constructor stub
@@ -16,10 +23,12 @@ public class DataConnection {
             connectDB(dbfilename);
         }
         else {
-            System.out.println("Connection already opened");
+            System.out.println("Connection established");
         }
     }
 
+    // this method is to connect to a database and display a message
+    // when the program is connected to the database
     private void connectDB(String dataFilename) throws SQLException {
         File dataFile = new File("");
         String url = "jdbc:sqlite:" + dataFile.getAbsolutePath() + dataFilename;
@@ -28,6 +37,7 @@ public class DataConnection {
         System.out.println("Connection to database successfully");
     }
 
+    // addEmployeeToDB method saves the data into the database
     public void addEmplolyeeToDB(EmployeeAdd employeeAdd) throws SQLException {
         String query = "INSERT INTO Employee(FirstName, LastName, hireDate, status)"
                 + " values(? , ? , ? , ?)";
@@ -46,11 +56,13 @@ public class DataConnection {
         prepared2.execute();
     }
 
+    // This method is to save the data when a user choose to update employee salary
+    // in the main menu.
     public void updateEmployee(EmployeeAdd employeeAdd) throws SQLException {
         String updateEmployee = "UPDATE main.Salary set salary = ? where employeeID = ?";
         PreparedStatement updateEmployeeStatement = this.conn.prepareStatement(updateEmployee);
-        int updaterow;
         updateEmployeeStatement.setDouble(1, employeeAdd.getSalary());
+        updateEmployeeStatement.executeUpdate();
         updateEmployeeStatement.close();
     }
 
@@ -119,6 +131,7 @@ public class DataConnection {
         prepared.close();
     }
 
+    // displayJoin method implements the JOIN statement and display data in the program.
     public void displayJoin() throws SQLException {
         displayAggregate();
         String query = "SELECT Employee.employeeID, FirstName, LastName, HireDate,salary, status " +
@@ -147,6 +160,8 @@ public class DataConnection {
             System.out.println("\n-----------------------------------------------" +
                     "----------------------------------------------");
         }
+        rs.close();
+        prepared.close();
     }
 
     // displayAggregate method display the statistic salary data
@@ -170,10 +185,9 @@ public class DataConnection {
         prepared.close();
     }
 
-        /**
-         * Close the connection to avoid any
-         * problems (database lock)
-         */
+    /**
+     * Close the database connection
+     */
     public void close() {
         try {
             this.conn.close();

@@ -57,6 +57,7 @@ class DataConnectionTest {
         prepared.setString(3, employeeAdd.getHireDate());
         prepared.setString(4, employeeAdd.getStatus());
         prepared.execute();
+        prepared.close();
 
         String query2 = "INSERT INTO "
                 + "Salary(salary)"
@@ -64,7 +65,7 @@ class DataConnectionTest {
         PreparedStatement prepared2 = this.conn.prepareStatement(query2);
         prepared.setDouble(1, employeeAdd.getSalary());
         prepared2.execute();
-        prepared.close();
+        prepared2.close();
     }
 
     @Test
@@ -139,7 +140,6 @@ class DataConnectionTest {
 
     @Test
     void displayAggregate() throws SQLException {
-
         String query = "SELECT COUNT(employeeID) AS totalEmployee, min(salary) as minimumSalary," +
                 "max(salary), avg(salary)\n" +
                 "FROM salary";
@@ -159,14 +159,15 @@ class DataConnectionTest {
         prepared.close();
     }
 
-    @Test
-    void updateEmployee() throws SQLException, EmployeeIDException {
-        EmployeeAdd empAdd = new EmployeeAdd(11,"Jen","Tran","11/05/1992",41000,"active" );
-        String updateEmployee = "UPDATE Salary SET salary = 54000 WHERE employeeID = 11";
-        PreparedStatement prepUpdate = conn.prepareStatement(updateEmployee);
-        prepUpdate.setDouble(1,empAdd.getSalary());
-        prepUpdate.close();
-    }
+//    @Test
+//    void updateEmployee() throws SQLException, EmployeeIDException {
+//        EmployeeAdd empAdd = new EmployeeAdd(13,"Jen","Tran","11/05/1992",41000,"active" );
+//        String updateEmployee = "UPDATE Salary SET salary = 54000 WHERE employeeID = 11";
+//        PreparedStatement updateEmployeeStatement = this.conn.prepareStatement(updateEmployee);
+//        updateEmployeeStatement.setDouble(1, empAdd.getSalary());
+//        updateEmployeeStatement.executeUpdate();
+//        updateEmployeeStatement.close();
+//    }
 
     /**
      * Close the connection
