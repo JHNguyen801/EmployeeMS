@@ -244,7 +244,7 @@ public class EmployeeApp {
     }
 
     private static void DBSubMenu(){
-        System.out.println("\n\t\t  Filter Submenu");
+        System.out.println("\n\t\t  Database View Submenu");
         System.out.println("*****************************************");
         System.out.println("Enter 1: Display employees in status order");
         System.out.println("Enter 2: Display Join & Aggregate Employee Info");

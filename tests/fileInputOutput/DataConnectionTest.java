@@ -15,7 +15,6 @@ class DataConnectionTest {
 
     @Test
     void insertData() throws SQLException {
-        Connection conn = DriverManager.getConnection(connectionURL);
         Statement statement = conn.createStatement();
         try {
             statement.executeUpdate("INSERT INTO Employee VALUES (1, 'Kat', 'Burr', '01/01/2021', 'active')");
@@ -48,7 +47,7 @@ class DataConnectionTest {
 
     @Test
     void addEmplolyeeToDB() throws SQLException, EmployeeIDException {
-        EmployeeAdd employeeAdd = new EmployeeAdd(10,"Jen","Tran","11/05/1992",41000,"active");
+        EmployeeAdd employeeAdd = new EmployeeAdd(9,"Jen","Tran","11/05/1992",41000,"active");
         String query = "INSERT INTO Employee(FirstName, LastName, hireDate, status)"
                 + " values(? , ?, ?, ?)";
         PreparedStatement prepared = this.conn.prepareStatement(query);
@@ -74,7 +73,7 @@ class DataConnectionTest {
                 "FROM Employee " +
                 "JOIN Salary ON Employee.employeeID = Salary.employeeID ORDER BY status";
 
-        PreparedStatement prepared = this.conn.prepareStatement(query);
+        PreparedStatement prepared = conn.prepareStatement(query);
 
         ResultSet rs = prepared.executeQuery();
         ResultSetMetaData resultMeta = rs.getMetaData();
@@ -109,7 +108,7 @@ class DataConnectionTest {
                 "FROM Employee " +
                 "JOIN Salary ON Employee.employeeID = Salary.employeeID ORDER BY FirstName, LastName";
 
-        PreparedStatement prepared = this.conn.prepareStatement(query);
+        PreparedStatement prepared = conn.prepareStatement(query);
 
         ResultSet rs = prepared.executeQuery();
         ResultSetMetaData resultMeta = rs.getMetaData();
@@ -144,7 +143,7 @@ class DataConnectionTest {
         String query = "SELECT COUNT(employeeID) AS totalEmployee, min(salary) as minimumSalary," +
                 "max(salary), avg(salary)\n" +
                 "FROM salary";
-        PreparedStatement prepared = this.conn.prepareStatement(query);
+        PreparedStatement prepared = conn.prepareStatement(query);
         ResultSet rs = prepared.executeQuery();
         ResultSetMetaData resultMeta = rs.getMetaData();
         System.out.printf("%10s %12s %14s %14s", "Total Employee", "Min Salary", "Max Salary", "Avg Salary");
@@ -160,14 +159,25 @@ class DataConnectionTest {
         prepared.close();
     }
 
+    @Test
+    void updateEmployee() throws SQLException, EmployeeIDException {
+        EmployeeAdd empAdd = new EmployeeAdd(11,"Jen","Tran","11/05/1992",41000,"active" );
+        String updateEmployee = "UPDATE Salary SET salary = 54000 WHERE employeeID = 11";
+        PreparedStatement prepUpdate = conn.prepareStatement(updateEmployee);
+        prepUpdate.setDouble(1,empAdd.getSalary());
+        prepUpdate.close();
+    }
+
     /**
-     * Close the connection to avoid any problems (database lock)
+     * Close the connection
      */
     public void close() {
         try {
-            this.conn.close();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
 }

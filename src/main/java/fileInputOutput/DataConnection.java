@@ -42,9 +42,16 @@ public class DataConnection {
                 + "Salary(salary)"
                 + " values(?)";
         PreparedStatement prepared2 = this.conn.prepareStatement(query2);
-//        prepared.setInt(1, employeeAdd.getEmployeeID());
         prepared2.setDouble(1, employeeAdd.getSalary());
         prepared2.execute();
+    }
+
+    public void updateEmployee(EmployeeAdd employeeAdd) throws SQLException {
+        String updateEmployee = "UPDATE main.Salary set salary = ? where employeeID = ?";
+        PreparedStatement updateEmployeeStatement = this.conn.prepareStatement(updateEmployee);
+        int updaterow;
+        updateEmployeeStatement.setDouble(1, employeeAdd.getSalary());
+        updateEmployeeStatement.close();
     }
 
     // insertData() method is for testing the SQL insert statement

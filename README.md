@@ -23,8 +23,7 @@ The application should implement advanced Java concepts, which include in the fo
 10. JUnit Testing
 
 ### Class Model & Design
-![img_4.png](img_4.png)
-
+![img_3.png](img_3.png)
 
 ### Sample of the output program:
 

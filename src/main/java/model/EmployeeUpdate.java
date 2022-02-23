@@ -1,8 +1,10 @@
 package model;
 
+import fileInputOutput.DataConnection;
 import view.EmployeeApp;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,9 +15,11 @@ import java.util.Scanner;
 public class EmployeeUpdate {
 
         public double updateEmployee(ArrayList<EmployeeAdd> employeeList, int id) throws EmployeeIDException,
-                IOException {
+                IOException, SQLException {
         Scanner sc = new Scanner(System.in);
         EmployeeOutput eo = new EmployeeOutput();
+        DataConnection dataConnection = new DataConnection("EmployeeDB.db");
+        EmployeeAdd employeeAdd = new EmployeeAdd();
         double newSalary = 0;
         do {
             if (newSalary < 0) {
@@ -36,6 +40,7 @@ public class EmployeeUpdate {
         String confirm = sc.next();
         if (confirm.equals("yes")) {
             eo.updateAndSave(employeeList);
+            dataConnection.updateEmployee(employeeAdd);
             System.out.println("Salary updated");
         }
         else if (confirm.equals("no")) {
